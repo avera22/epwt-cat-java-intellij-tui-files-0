@@ -15,20 +15,48 @@ public class    App {
         printStudents(students, message);
 
         //TODO Guardar la llista d'estudiants al fitxer students.out
+
+        FileWriter fw = new FileWriter(file, true);
+        fw.write(buildListString(students , "Saved in student.out"));
+        fw.close();
         //TODO Torna a imprimir la llista d'estudiants
         //però ara llegint-la del fitxer students.out
+        readFromFile(new File("students.out"));
 
     }
 
     static String readFromFile(File file) throws IOException{
         //TODO Implementar usant FileReader
+
+        FileReader fr = new FileReader(file);
+
+        //El mètode read() llegeix caràcter a caràcter, però retorna un int
+        //és el int corresponent al caràcter llegit segons a taula ASCII
+        //Com que llegeix caràcter a caràcter, cal fer un bucle
+        //El bucle acaba quan read() ja no pot llegir més caràcters (s'han acabat)
+        //Quan els caràcters s'han acabat, read() retorna -1
+        int c;
+
+        //En aquest String guardarem el resultat de concatenar tots els caràcters
+        String contents = "";
+        while((c = fr.read()) != -1) {
+            contents += (char)c;
+        }
+
+
+        System.out.println(contents); //Imprimirà contents del archivo
+
+        //Finalment, cal tancar el FileReader
+        fr.close();
         //No podeu usar BufferedReader
+        return contents;
     }
 
     static void saveToFile(Student[] students, String message,
                            File file, boolean append)
             throws IOException {
         //TODO Implementar usant FileWriter
+        FileWriter fw =  new FileWriter(file, append);
         //No podeu usar BufferedWriter
     }
 
@@ -37,11 +65,13 @@ public class    App {
     //buildStudentListString
     static void printStudents(Student [] students,
                               String message){
-        System.out.println(buildListString(students, message));
+        System.out.println(buildListString(students, "Default List"));
+
+
     }
 
     //Mètode que genera un String amb la llista d'estudiants
-    static String buildListString(Student[] students, String message){
+    static String buildListString(Student[] students , String message){
         StringBuffer sb = new StringBuffer();
         sb.append("\n****");
         sb.append(" ");
@@ -123,4 +153,3 @@ public class    App {
         return students;
     }
 }
-
